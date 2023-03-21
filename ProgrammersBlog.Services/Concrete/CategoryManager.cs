@@ -22,34 +22,47 @@ namespace ProgrammersBlog.Services.Concrete
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IDataResult<Category>> Get(int categoryId)
+        public async Task<IDataResult<CategoryDto>> Get(int categoryId)
         {
            var category = await _unitOfWork.Categories.GetAsync(c => c.Id == categoryId,c=>c.Articles);
            if (category!=null)
            {
-               return new DataResult<Category>(ResultStatus.Success,category);
+               return new DataResult<CategoryDto>(ResultStatus.Success, new CategoryDto
+               {
+                   Category = category,
+                   ResultStatus = ResultStatus.Success
+               });
            }
-           return new DataResult<Category>(ResultStatus.Error,"Böyle bir kategori bulunamadı.",null);
+           return new DataResult<CategoryDto>(ResultStatus.Error,"Böyle bir kategori bulunamadı.",null);
         }
 
-        public async Task<IDataResult<IList<Category>>> GetAll()
+        public async Task<IDataResult<CategoryListDto>> GetAll()
         {
             var categories = await _unitOfWork.Categories.GetAllAsync(null,c=>c.Articles);
             if (categories.Count> 0)
             {
-                return new DataResult<IList<Category>>(ResultStatus.Success,categories);
+                return new DataResult<CategoryListDto>(ResultStatus.Success, new CategoryListDto
+                {
+                    CategoryDtos = (List<CategoryDto>)categories,
+                    ResultStatus=ResultStatus.Success
+
+                });
             }
-            return new DataResult<IList<Category>>(ResultStatus.Error,"Hiç bir kategori bulunamadı.",null);
+            return new DataResult<CategoryListDto>(ResultStatus.Error,"Hiç bir kategori bulunamadı.",null);
         }
 
-        public async Task<IDataResult<IList<Category>>> GetAllByNonDeleted()
+        public async Task<IDataResult<CategoryListDto>> GetAllByNonDeleted()
         {
             var categories = await _unitOfWork.Categories.GetAllAsync(c => !c.IsDeleted, c => c.Articles);
-            if (categories.Any())
+            if (categories.Count > 0)
             {
-                return new DataResult<IList<Category>>(ResultStatus.Success,categories);
+                return new DataResult<CategoryListDto>(ResultStatus.Success, new CategoryListDto
+                {
+                    CategoryDtos = (List<CategoryDto>)categories,
+                    ResultStatus = ResultStatus.Success
+                });
             }
-            return new DataResult<IList<Category>>(ResultStatus.Error, "Hiç bir kategori bulunamadı.", null);
+            return new DataResult<CategoryListDto>(ResultStatus.Error, "Hiç bir kategori bulunamadı.", null);
         }
 
         public async Task<IResult> Add(CategoryAddDto categoryAddDto, string createdByName)
@@ -111,6 +124,21 @@ namespace ProgrammersBlog.Services.Concrete
                 return new Result(ResultStatus.Success, $"{category.Name} adlı kategori başarıyla veritabanından silinmiştir.");
             }
             return new Result(ResultStatus.Error, "Böyle bir kategori bulunamadı.");
+        }
+
+
+        public async Task<IDataResult<CategoryListDto>> GetAllByNonDeletedandActive()
+        {
+            var categories = await _unitOfWork.Categories.GetAllAsync(c => !c.IsDeleted && c.IsActive, c => c.Articles);
+            if (categories.Count > 0)
+            {
+                return new DataResult<CategoryListDto>(ResultStatus.Success, new CategoryListDto
+                {
+                    CategoryDtos = (List<CategoryDto>)categories,
+                    ResultStatus = ResultStatus.Success
+                });
+            }
+            return new DataResult<CategoryListDto>(ResultStatus.Error, "Hiç bir kategori bulunamadı.", null);
         }
     }
 }

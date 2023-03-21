@@ -47,6 +47,7 @@ namespace ProgrammersBlog.Entities.Dtos
         [DisplayName("Kategori")]
         [Required(ErrorMessage = "{0} alanı boş geçilmemelidir.")]
         public int CategoryId { get; set; }
+        public int UserId { get; set; }
         public Category Category { get; set; }
         [DisplayName("Aktif Mi?")]
         [Required(ErrorMessage = "{0} alanı boş geçilmemelidir.")]
