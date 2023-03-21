@@ -50,7 +50,7 @@ namespace ProgrammersBlog.Services.Concrete
             }
             return new DataResult<CategoryListDto>(ResultStatus.Error,"Hiç bir kategori bulunamadı.",null);
         }
-
+        //deleted list
         public async Task<IDataResult<CategoryListDto>> GetAllByNonDeleted()
         {
             var categories = await _unitOfWork.Categories.GetAllAsync(c => !c.IsDeleted, c => c.Articles);
