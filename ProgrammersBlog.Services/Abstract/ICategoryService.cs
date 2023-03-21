@@ -11,6 +11,7 @@ namespace ProgrammersBlog.Services.Abstract
 {
     public interface ICategoryService
     {
+        // new changes
         Task<IDataResult<CategoryDto>> Get(int categoryId);
         Task<IDataResult<CategoryListDto>> GetAll();
         Task<IDataResult<CategoryListDto>> GetAllByNonDeleted();
