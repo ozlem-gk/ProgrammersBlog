@@ -35,7 +35,7 @@ namespace ProgrammersBlog.Services.Concrete
         public async Task<IDataResult<IList<Category>>> GetAll()
         {
             var categories = await _unitOfWork.Categories.GetAllAsync(null,c=>c.Articles);
-            if (categories.Count>-1)
+            if (categories.Count> 0)
             {
                 return new DataResult<IList<Category>>(ResultStatus.Success,categories);
             }
@@ -45,7 +45,7 @@ namespace ProgrammersBlog.Services.Concrete
         public async Task<IDataResult<IList<Category>>> GetAllByNonDeleted()
         {
             var categories = await _unitOfWork.Categories.GetAllAsync(c => !c.IsDeleted, c => c.Articles);
-            if (categories.Count>-1)
+            if (categories.Any())
             {
                 return new DataResult<IList<Category>>(ResultStatus.Success,categories);
             }

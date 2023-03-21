@@ -28,7 +28,7 @@ namespace ProgrammersBlog.Entities.Dtos
         [DisplayName("Tarih")]
         [Required(ErrorMessage = "{0} alanı boş geçilmemelidir.")]
         [DisplayFormat(ApplyFormatInEditMode = true,DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime Date { get; set; }
+        public DateTime DateTime { get; set; }
         [DisplayName("Seo Yazar")]
         [Required(ErrorMessage = "{0} alanı boş geçilmemelidir.")]
         [MaxLength(50, ErrorMessage = "{0} alanı {1} karakterden büyük olmamalıdır.")]
@@ -51,5 +51,6 @@ namespace ProgrammersBlog.Entities.Dtos
         [DisplayName("Aktif Mi?")]
         [Required(ErrorMessage = "{0} alanı boş geçilmemelidir.")]
         public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }
